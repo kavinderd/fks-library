@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="span8">
+    <%= simple_form_for @member do |f| %>
+      <%= f.input :name , placeholder: 'name'%>
+      <%= f.input :email, placeholder: 'email'%>
+      <%= f.submit 'Create' %>
+    <% end %>
+  </div>  
+</div>
