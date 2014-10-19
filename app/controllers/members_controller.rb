@@ -7,6 +7,7 @@ class MembersController < ApplicationController
   def create
     @member = Member.new(member_params)
     if @member.save
+      flash[:notice] = "Member Created"
       redirect_to @member
     else
       render :new
@@ -14,6 +15,7 @@ class MembersController < ApplicationController
   end
 
   def show
+    @member = Member.find(params[:id])
   end
 
   private

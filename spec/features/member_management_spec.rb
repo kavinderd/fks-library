@@ -6,6 +6,6 @@ feature 'MemberManagement' do
     fill_in 'name', with: "Test Name"
     fill_in 'email', with: "test@gmail.com"
     click_button 'Create'
-    expect(page).to have_content "Member created"
+    expect(page).to have_content 'Test Name'
   end
 end

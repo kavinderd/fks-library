@@ -43,4 +43,14 @@ RSpec.describe MembersController, :type => :controller do
     end
   end
 
+  context "GET 'show'" do
+
+    it "sends the find message to Member" do
+      dub = class_double(Member).as_stubbed_const
+      expect(dub).to receive(:find).with("1").and_return(true)
+      get :show, id: 1
+    end
+
+  end
+
 end

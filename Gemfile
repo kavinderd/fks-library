@@ -52,4 +52,8 @@ group :development, :test do
   gem 'pry-debugger'
 end
 
+# Admin control
+
+gem 'rails_admin'
+
 
