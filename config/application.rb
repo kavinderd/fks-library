@@ -28,7 +28,6 @@ module LibraryApp
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     #
-    config.assets.precompile += %w(rails_admin/rails_admin.css rails_admin/rails_admin.js)
     config.serve_static_assets = true
   end
 end
