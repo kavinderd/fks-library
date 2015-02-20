@@ -33,6 +33,9 @@ gem 'therubyracer'
 gem 'less-rails'
 gem 'twitter-bootstrap-rails'
 
+gem 'roo'
+gem 'prawn'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -49,7 +52,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'
   gem 'pry'
-  gem 'pry-debugger'
+  gem 'pry-byebug'
 end
 
 # Admin control
