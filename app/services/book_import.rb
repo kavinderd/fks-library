@@ -19,6 +19,7 @@ class BookImport
       create_books(row, author)
       puts "Created #{row["Title"]}"
     end
+    p "Rejected because #{@rejects.map { |item| item[1] }.uniq}"
   end
 
   def open_spreadsheet

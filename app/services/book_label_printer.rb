@@ -14,13 +14,13 @@ class BookLabelPrinter
       Book.find_each do |book|
         uid = Digest::SHA1.hexdigest(book.title).chars.inject(0) { |result, char| result += char.to_i }
         pdf.start_new_page and start = 725 if start < 120
-        pdf.bounding_box([x,start], width: 270, height: 145) do
-          pdf.stroke_bounds
-          pdf.move_down 8
+        pdf.bounding_box([x,start], width: 275, height: 150) do
+          pdf.transparent(0.5) {pdf.dash(1);  pdf.stroke_bounds; pdf.undash;}
+          pdf.move_down 15
           pdf.text "<b>Fremont Khalsa School Library</b>", align: :center, size: 14, inline_format: true
-          pdf.move_down 8
+          pdf.move_down 10
           pdf.text "Book ID: #{book.code}", align: :left, indent_paragraphs: 10, size: 10
-          pdf.draw_text "Copy #: #{book.copy_number}", at: [ 210, 108], size: 10
+          pdf.draw_text "Copy #: #{book.copy_number}", at: [ 210, 100], size: 10
           pdf.move_down 6
           pdf.text "Category: #{book.category}", align: :left, indent_paragraphs: 10, size: 10
           pdf.move_down 6
