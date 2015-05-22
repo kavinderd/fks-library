@@ -51,6 +51,8 @@ gem 'prawn'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem "sucker_punch"
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'

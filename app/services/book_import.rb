@@ -42,13 +42,14 @@ class BookImport
       prev_num = Book.where(title: row["Title"]).order("copy_number desc").first.copy_number
       puts "FOUND A PREVIOUS"
     end
-    (row["Copy #"] || 1).to_i.times do |i|
+    (row["# of Copies"] || 1).to_i.times do |i|
       puts "ENTERING BOOK SAVING"
       begin
         b = Book.new
         b.language = row["Language"].downcase.strip.gsub("-", "_") if row["Language"]
-        b.age_group = row["Age-Grp"].downcase.split("/").first.gsub("-", "").strip.gsub(" ","_") if row["Age-Grp"]
+        b.level = get_level(row)
         b.category = row["Category"].strip.gsub(" ", "_").underscore if row["Category"]
+        b.sub_category = row["Subcategory"].strip.gsub(" ", "_").underscore if row["Level"]
         b.title = row["Title"]
         if prev_num 
           b.copy_number = prev_num + 1
@@ -57,6 +58,8 @@ class BookImport
           b.copy_number = i + 1 
         end
         b.author = author
+        b.collection = default_collection
+        b.public_id = generate_public_id(b)
         b.save
         puts "Saved"
       rescue ArgumentError => e
@@ -64,4 +67,36 @@ class BookImport
       end
     end
   end
+  
+  def get_level(row)
+    level =  row["Level"].downcase.split("/").first.gsub("-", "").strip.gsub(" ","_") if row["Level"]
+    level = "elementary" if level == "elem"
+    level = "pre_k" if level == "prek"
+    level
+  end
+
+  def default_collection
+    @collection = Collection.first || initialize_collection 
+  end
+
+  def initialize_collection
+    c = Collection.new
+    c.name = "Fremont Gurdwara"
+    c.city = "Fremont"
+    c.public_id = 1
+    c.save!
+    c
+  end
+
+  def generate_public_id(book)
+    previous = Book.where("collection_id = ?", book.collection_id)
+    previous = previous.send(book.category)
+    previous = previous.send(book.sub_category)
+    previous = previous.send(book.level)
+    previous = previous.send(book.language)
+    previous = previous.order("created_at desc").first
+    previous ? previous.public_id + 1 : 1
+  end
+  
+
 end

@@ -1,0 +1,9 @@
+<div class="mailer-header">
+  <h1> Checkout Information: </h1>
+  <ul>
+    <li> Member: <%= @checkout.member.name %> </li>
+    <li> Book: <%= @checkout.book.title %> </li>
+    <li> Due Date: <%= @checkout.due_date.strftime("%d") %> </li>
+    <li> Checkout Id: <%= @checkout.id %> </li>
+  </ul>
+</div>

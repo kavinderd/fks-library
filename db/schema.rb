@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150101192218) do
+ActiveRecord::Schema.define(version: 20150321212554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,12 +28,14 @@ ActiveRecord::Schema.define(version: 20150101192218) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "collection_id"
-    t.string   "code"
     t.integer  "language"
-    t.integer  "category"
-    t.integer  "age_group"
     t.integer  "author_id"
     t.integer  "copy_number",   default: 0
+    t.integer  "category"
+    t.string   "code"
+    t.integer  "sub_category"
+    t.integer  "level"
+    t.integer  "public_id"
   end
 
   create_table "checkouts", force: true do |t|
@@ -50,6 +52,7 @@ ActiveRecord::Schema.define(version: 20150101192218) do
     t.string   "city"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "public_id"
   end
 
   create_table "members", force: true do |t|

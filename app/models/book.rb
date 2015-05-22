@@ -4,17 +4,75 @@ class Book < ActiveRecord::Base
   has_many :checkouts, inverse_of: :book
   belongs_to :author, inverse_of: :books
 
-  enum language: [:punjabi, :english, :bilingual, :bilingual_punjabi, :bilingual_hindi, :bilingual_pbi]
-  enum age_group: [:any,:prek, :elem, :middle, :high, :adult, :children, :pre_elem]
-                 
-  enum category: [:gurbani, :janam_sakhi, :sikh_history, :sikh_literature, :childrens_fiction, :fiction, :cultural, :comedy, :punjabi_language_and_grammar, :punjabi_primer, :psb_syllabus_books, :sikh_comics, :other_comics, :dictionary, :reference, :syllabus_books, :other_literature, :childrens, :general_punjabi]
+  enum category: [ 
+    :blank_category,
+    :children,
+    :cultural,
+    :gurbani,
+    :history,
+    :geography,
+    :literature,
+    :reference
+  ]
+
+  enum sub_category: [
+    :blank_sub_category,
+    :biography,
+    :janam_sakhi,
+    :fiction,
+    :primer,
+    :psb_syllabus,
+    :gurdwaras,
+    :language_and_grammar,
+    :sikh_comics,
+    :sikh_motivational,
+    :traditional_stories,
+    :dictionary,
+    :legal,
+    :steek_and_teeka,
+    :sikh_history,
+    :mughal_history,
+    :british_history,
+    :world_history,
+    :gurvichaar,
+    :paath,
+    :folk_tales,
+    :syllabus,
+    :comedy,
+    :sports,
+    :gatka,
+    :festivals,
+    :riddles,
+    :bhagats,
+    :traditions,
+    :social,
+    :poetry
+  ]
+
+  enum level: [
+    :blank_level,
+    :pre_k,
+    :elementary,
+    :middle,
+    :high,
+    :adult
+  ]
+
+  enum language: [
+    :blank_language,
+    :punjabi,
+    :urdu,
+    :pharsi,
+    :english,
+    :bilingual
+  ]
+
 
 
   after_create :generate_code
 
   def generate_code
-    uid = Digest::SHA1.hexdigest(self.title).chars.inject(0) { |result, char| result += char.to_i }
-    self.code = "#{Book.languages[self.language]}.#{Book.age_groups[self.age_group]}.#{Book.categories[self.category]}.#{self.copy_number}.#{uid}"
+    self.code = "#{self.collection.public_id}.#{Book.categories[self.category]}.#{Book.sub_categories[self.sub_category]}.#{Book.levels[self.level]}.#{Book.languages[self.language]}.#{self.public_id}.#{self.copy_number}"
     self.save!
   end
 
@@ -29,12 +87,17 @@ class Book < ActiveRecord::Base
           Book.languages.map { |key, value| [key.gsub("_", " ").titleize, value] }
         end
       end
-      field :age_group, :enum do
+      field :level, :enum do
         enum do
-          Book.age_groups.map { |key, value| [key.gsub("_", " ").titleize, value] }
+          Book.levelss.map { |key, value| [key.gsub("_", " ").titleize, value] }
         end
       end
       field :category, :enum do
+        enum do
+          Book.categories.map { |key, value| [key.gsub("_", " ").titleize, value] }
+        end
+      end
+      field :sub_category, :enum do
         enum do
           Book.categories.map { |key, value| [key.gsub("_", " ").titleize, value] }
         end
