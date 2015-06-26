@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :books do
     collection do
       post "import"
+      post "bulk_update"
     end
   end
 

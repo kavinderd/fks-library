@@ -13,23 +13,21 @@ class MemberImport
     header = spreadsheet.row(1)
     (1..spreadsheet.last_row).each do |r|
       row = Hash[[header, spreadsheet.row(r)].transpose]
-      create_member(row) unless Member.find_by(student_number: row["S No."])
-      puts "Created student #{Name}"
+      p row
+      create_member(row) unless Member.find_by(student_number: row["Student ID "].to_i)
+      puts "Created student #{row["Name"]}"
     end
   end
 
   def create_member(row)
     begin 
       m = Member.new
-      m.student_number = row["S. No."].strip.to_i
-      m.name = row["Name"].strip
-      m.dob = Date.parse(row["DOB"].strip) if row["DOB"]
-      m.phone_number = row["Primary Phone Number"]
+      m.student_number = row["Student ID "].to_i
+      m.name = row["Name "].strip
       m.email = row["Email"].strip if row["Email"]
-      m.address = row["Address"]
       m.save!
     rescue Exception => e
-
+      puts e
     end
   end
 end

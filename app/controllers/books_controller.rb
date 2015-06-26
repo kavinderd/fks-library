@@ -10,4 +10,11 @@ class BooksController < ApplicationController
     flash[:notice] = "Books Imported"
     redirect_to "/admin"
   end
+
+  def bulk_update
+    bi = BookImport.new(params[:file])
+    bi.update
+    flash[:notice] = "Books Updated"
+    redirect_to "/admin"
+  end
 end

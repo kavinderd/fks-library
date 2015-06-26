@@ -9,6 +9,37 @@ class BookImport
     Author.connection
   end
 
+  def update
+    spreadsheet = open_spreadsheet
+    header = spreadsheet.row(1)
+    (1..spreadsheet.last_row).each do |r|
+      row = Hash[[header, spreadsheet.row(r)].transpose]
+      books = find_all_with_title(row["Title"])
+      author = find_or_retrieve_author(row)
+      count = row["# of Copies"].to_i
+      books.each do |b|
+        begin
+          b.language = row["Language"].downcase.strip.gsub("-", "_") if row["Language"]
+          b.level = get_level(row)
+          b.category = row["Category"].strip.gsub(" ", "_").underscore if row["Category"]
+          b.sub_category = row["Subcategory"].strip.gsub(" ", "_").underscore if row["Level"]
+          b.author = author
+          b.collection = default_collection
+          b.public_id = generate_public_id(b)
+          b.save!
+          count -= 1
+        rescue ArgumentError => e
+          @rejects << [row, e.message]
+        end
+      end
+      if count > 0
+        row["# of Copies"] = count.to_s
+        create_books(row, author)
+      end
+
+    end
+  end
+
   def import
     spreadsheet = open_spreadsheet
     header = spreadsheet.row(1)
@@ -34,6 +65,10 @@ class BookImport
 
   def find_or_retrieve_author(row)
     Author.find_or_create_by(name:row["Author"].strip)
+  end
+
+  def find_all_with_title(title)
+    Book.where(title: title)
   end
 
   def create_books(row, author)

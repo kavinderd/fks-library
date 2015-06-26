@@ -1,5 +1,5 @@
 class Member < ActiveRecord::Base
-  validates_presence_of :name, :email
+  validates_presence_of :name
   has_many :checkouts, inverse_of: :member
 
   after_create :generate_code

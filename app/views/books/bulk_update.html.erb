@@ -1,0 +1,5 @@
+<%= form_tag bulk_update_books_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag "Import" %>
+<% end %>
+

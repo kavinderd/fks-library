@@ -1,4 +1,11 @@
+<h2> Import New Books </h2>
 <%= form_tag import_books_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag "Import" %>
+<% end %>
+<hr>
+<h2> Bulk Update Existing Books </h2>
+<%= form_tag bulk_update_books_path, multipart: true do %>
   <%= file_field_tag :file %>
   <%= submit_tag "Import" %>
 <% end %>
