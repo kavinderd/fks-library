@@ -132,6 +132,16 @@ class BookImport
     previous = previous.order("created_at desc").first
     previous ? previous.public_id + 1 : 1
   end
+
+  def self.generate_public_id(book)
+    previous = Book.where("collection_id = ?", book.collection_id)
+    previous = previous.send(book.category)
+    previous = previous.send(book.sub_category)
+    previous = previous.send(book.level)
+    previous = previous.send(book.language)
+    previous = previous.order("created_at desc").first
+    previous ? previous.public_id + 1 : 1
+  end
   
 
 end

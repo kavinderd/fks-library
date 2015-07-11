@@ -5,12 +5,12 @@ class BookLabelPrinter
   def initialize
   end
 
-  def print_recently_updated_books
+  def print_recently_updated_books(time = 1.day.ago)
     Prawn::Document.generate("book_labels.pdf") do |pdf|
       start = 725
       x = 0
       i = 0
-      books = Book.where("updated_at > ?", 1.day.ago).order("created_at asc")
+      books = Book.where("updated_at > ?", time).order("created_at asc")
       books.each do |book|
         pdf.start_new_page and start = 725 if start < 120
         pdf.bounding_box([x,start], width: 280, height: 155) do
