@@ -1,7 +1,7 @@
 class Checkout < ActiveRecord::Base
   validates_presence_of :due_date, :book, :member
-  validate :book_available?
-  validate :checkout_allowed?
+  validate :book_available?, on: :create
+  validate :checkout_allowed?, on: :create
   enum status: [ :active, :overdue, :returned]
 
   belongs_to :book, inverse_of: :checkouts
