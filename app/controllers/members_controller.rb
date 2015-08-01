@@ -18,6 +18,13 @@ class MembersController < ApplicationController
     @member = Member.find(params[:id])
   end
 
+  def import
+    mi = MemberImport.new(params[:file])
+    mi.import
+    flash[:notice] = "Members Imported"
+    redirect_to "/admin"
+  end
+
   private
 
   def member_params

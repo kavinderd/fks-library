@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  resources :members
+  resources :members do
+    collection do
+      post "import"
+    end
+  end
   resources :books do
     collection do
       post "import"

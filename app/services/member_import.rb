@@ -9,7 +9,7 @@ class MemberImport
   end
 
   def import
-    spreadsheet = Roo::Excelx.new(@file)
+    spreadsheet =  open_spreadsheet
     header = spreadsheet.row(1)
     (1..spreadsheet.last_row).each do |r|
       row = Hash[[header, spreadsheet.row(r)].transpose]
@@ -28,6 +28,15 @@ class MemberImport
       m.save!
     rescue Exception => e
       puts e
+    end
+  end
+
+  
+  def open_spreadsheet
+    case File.extname(@file.original_filename)
+    when '.xls' then Roo::Excel.new(@file.path, nil, :ignore)
+    when '.xlsx' then Roo::Excelx.new(@file.path, nil, :ignore)
+    else raise "Unknown file type: #{@file.original_filename}"
     end
   end
 end

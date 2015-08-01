@@ -6,4 +6,11 @@
       <%= f.submit 'Create' %>
     <% end %>
   </div>  
+
+  <h2> Import New Members </h2>
+  <%= form_tag import_members_path, multipart: true do %>
+    <%= file_field_tag :file %>
+    <%= submit_tag "Import" %>
+  <% end %>
+  <hr>
 </div>
