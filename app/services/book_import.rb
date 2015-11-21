@@ -75,10 +75,9 @@ class BookImport
     prev_num = nil
     if Book.where(title: row["Title"]).any?
       prev_num = Book.where(title: row["Title"]).order("copy_number desc").first.copy_number
-      puts "FOUND A PREVIOUS"
     end
+    public_id = nil
     (row["# of Copies"] || 1).to_i.times do |i|
-      puts "ENTERING BOOK SAVING"
       begin
         b = Book.new
         b.language = row["Language"].downcase.strip.gsub("-", "_") if row["Language"]
@@ -94,7 +93,10 @@ class BookImport
         end
         b.author = author
         b.collection = default_collection
-        b.public_id = generate_public_id(b)
+        unless public_id
+          public_id = generate_public_id(b)
+        end
+        b.public_id = public_id
         b.save
         puts "Saved"
       rescue ArgumentError => e
